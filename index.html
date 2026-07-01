@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday Expense Tracker — Catat Pengeluaran Liburanmu</title>
+    <meta name="description" content="Aplikasi pencatat pengeluaran selama liburan. Kelola budget, lacak pengeluaran per kategori, dan lihat ringkasan finansialmu.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">✈️</div>
+                    <div>
+                        <h1 class="app-title">Holiday Tracker</h1>
+                        <p class="app-subtitle">Catat pengeluaran liburanmu</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" id="btn-export" title="Export Data">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    </button>
+                    <button class="btn-icon" id="btn-clear" title="Hapus Semua Data">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Trip Info Bar -->
+        <section class="trip-info-bar" id="trip-info-bar">
+            <div class="trip-info-content">
+                <div class="trip-name-section">
+                    <span class="trip-label">Destinasi</span>
+                    <input type="text" id="trip-name" class="trip-name-input" placeholder="Nama liburanmu..." value="">
+                </div>
+                <div class="trip-dates-section">
+                    <div class="date-field">
+                        <span class="trip-label">Mulai</span>
+                        <input type="date" id="trip-start" class="date-input">
+                    </div>
+                    <span class="date-separator">→</span>
+                    <div class="date-field">
+                        <span class="trip-label">Selesai</span>
+                        <input type="date" id="trip-end" class="date-input">
+                    </div>
+                </div>
+                <div class="budget-section">
+                    <span class="trip-label">Budget</span>
+                    <div class="budget-input-wrapper">
+                        <span class="currency-prefix">Rp</span>
+                        <input type="text" id="trip-budget" class="budget-input" placeholder="0">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Dashboard -->
+        <section class="stats-dashboard">
+            <div class="stat-card stat-total">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Pengeluaran</span>
+                    <span class="stat-value" id="stat-total">Rp 0</span>
+                </div>
+            </div>
+            <div class="stat-card stat-remaining">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-info">
+                    <span class="stat-label">Sisa Budget</span>
+                    <span class="stat-value" id="stat-remaining">Rp 0</span>
+                </div>
+            </div>
+            <div class="stat-card stat-count">
+                <div class="stat-icon">📝</div>
+                <div class="stat-info">
+                    <span class="stat-label">Jumlah Transaksi</span>
+                    <span class="stat-value" id="stat-count">0</span>
+                </div>
+            </div>
+            <div class="stat-card stat-daily">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <span class="stat-label">Rata-rata / Hari</span>
+                    <span class="stat-value" id="stat-daily">Rp 0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Progress -->
+        <section class="budget-progress-section" id="budget-progress-section" style="display: none;">
+            <div class="progress-header">
+                <span class="progress-title">Penggunaan Budget</span>
+                <span class="progress-percent" id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Add Expense Form -->
+            <section class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">➕</span>
+                    Tambah Pengeluaran
+                </h2>
+                <form id="expense-form" class="expense-form">
+                    <div class="form-row">
+                        <div class="form-group form-group-desc">
+                            <label for="expense-desc">Deskripsi</label>
+                            <input type="text" id="expense-desc" placeholder="Contoh: Makan siang di warung" required>
+                        </div>
+                        <div class="form-group form-group-amount">
+                            <label for="expense-amount">Jumlah (Rp)</label>
+                            <input type="text" id="expense-amount" placeholder="50000" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group form-group-category">
+                            <label for="expense-category">Kategori</label>
+                            <select id="expense-category" required>
+                                <option value="">Pilih kategori...</option>
+                                <option value="🍔 Makanan & Minuman">🍔 Makanan & Minuman</option>
+                                <option value="🚗 Transportasi">🚗 Transportasi</option>
+                                <option value="🏨 Akomodasi">🏨 Akomodasi</option>
+                                <option value="🎢 Wisata & Hiburan">🎢 Wisata & Hiburan</option>
+                                <option value="🛍️ Belanja & Oleh-oleh">🛍️ Belanja & Oleh-oleh</option>
+                                <option value="⛽ BBM & Parkir">⛽ BBM & Parkir</option>
+                                <option value="💊 Kesehatan">💊 Kesehatan</option>
+                                <option value="📱 Komunikasi">📱 Komunikasi</option>
+                                <option value="📦 Lainnya">📦 Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-date">
+                            <label for="expense-date">Tanggal</label>
+                            <input type="date" id="expense-date" required>
+                        </div>
+                        <div class="form-group form-group-btn">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn-submit" id="btn-add-expense">
+                                <span class="btn-text">Tambah</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Category Breakdown -->
+            <section class="category-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📊</span>
+                    Pengeluaran per Kategori
+                </h2>
+                <div class="category-chart" id="category-chart">
+                    <div class="empty-state-mini">Belum ada data kategori</div>
+                </div>
+            </section>
+
+            <!-- Expense List -->
+            <section class="expense-list-section">
+                <div class="list-header">
+                    <h2 class="section-title">
+                        <span class="section-icon">📋</span>
+                        Daftar Pengeluaran
+                    </h2>
+                    <div class="list-controls">
+                        <select id="filter-category" class="filter-select">
+                            <option value="all">Semua Kategori</option>
+                        </select>
+                        <select id="sort-by" class="filter-select">
+                            <option value="date-desc">Terbaru</option>
+                            <option value="date-asc">Terlama</option>
+                            <option value="amount-desc">Termahal</option>
+                            <option value="amount-asc">Termurah</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="expense-list" id="expense-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">🏖️</div>
+                        <h3>Belum ada pengeluaran</h3>
+                        <p>Mulai catat pengeluaran liburanmu!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Holiday Expense Tracker &copy; 2026 — Data tersimpan di browser</p>
+        </footer>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-icon">⚠️</div>
+            <h3 class="modal-title" id="modal-title">Hapus Data?</h3>
+            <p class="modal-message" id="modal-message">Semua data pengeluaran akan dihapus. Tindakan ini tidak bisa dibatalkan.</p>
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" id="modal-cancel">Batal</button>
+                <button class="btn-modal btn-confirm" id="modal-confirm">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="edit-modal-overlay">
+        <div class="modal edit-modal">
+            <div class="modal-icon">✏️</div>
+            <h3 class="modal-title">Edit Pengeluaran</h3>
+            <form id="edit-form" class="edit-form">
+                <div class="form-group">
+                    <label for="edit-desc">Deskripsi</label>
+                    <input type="text" id="edit-desc" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-amount">Jumlah (Rp)</label>
+                    <input type="text" id="edit-amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-category">Kategori</label>
+                    <select id="edit-category" required>
+                        <option value="🍔 Makanan & Minuman">🍔 Makanan & Minuman</option>
+                        <option value="🚗 Transportasi">🚗 Transportasi</option>
+                        <option value="🏨 Akomodasi">🏨 Akomodasi</option>
+                        <option value="🎢 Wisata & Hiburan">🎢 Wisata & Hiburan</option>
+                        <option value="🛍️ Belanja & Oleh-oleh">🛍️ Belanja & Oleh-oleh</option>
+                        <option value="⛽ BBM & Parkir">⛽ BBM & Parkir</option>
+                        <option value="💊 Kesehatan">💊 Kesehatan</option>
+                        <option value="📱 Komunikasi">📱 Komunikasi</option>
+                        <option value="📦 Lainnya">📦 Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-date">Tanggal</label>
+                    <input type="date" id="edit-date" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal btn-cancel" id="edit-cancel">Batal</button>
+                    <button type="submit" class="btn-modal btn-confirm">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
