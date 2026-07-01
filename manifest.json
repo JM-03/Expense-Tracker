@@ -1,0 +1,18 @@
+{
+    "name": "Holiday Expense Tracker",
+    "short_name": "Holiday Tracker",
+    "description": "Catat pengeluaran liburanmu, sinkron di semua perangkat",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#0a0e1a",
+    "theme_color": "#6366f1",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
