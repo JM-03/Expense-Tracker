@@ -5,10 +5,10 @@
 // Lihat panduan lengkap di file SETUP.md
 //
 const firebaseConfig = {
-    apiKey: "ISI_DENGAN_API_KEY_KAMU",
-    authDomain: "ISI_DENGAN_AUTH_DOMAIN_KAMU",
-    projectId: "ISI_DENGAN_PROJECT_ID_KAMU",
-    storageBucket: "ISI_DENGAN_STORAGE_BUCKET_KAMU",
-    messagingSenderId: "ISI_DENGAN_MESSAGING_SENDER_ID_KAMU",
-    appId: "ISI_DENGAN_APP_ID_KAMU"
+  apiKey: "AIzaSyDmWCkYB-LZcWn7nVkf6d_a8TEfQW0Sff0",
+  authDomain: "holiday-tracker-2c7a7.firebaseapp.com",
+  projectId: "holiday-tracker-2c7a7",
+  storageBucket: "holiday-tracker-2c7a7.firebasestorage.app",
+  messagingSenderId: "920528127716",
+  appId: "1:920528127716:web:e6d70b215dd19507604ef1"
 };
